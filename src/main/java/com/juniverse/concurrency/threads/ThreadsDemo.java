@@ -3,11 +3,15 @@ package com.juniverse.concurrency.threads;
 import com.juniverse.concurrency.util.Concurrent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Hilos básicos: crear, esperar con {@code join}, interrumpir, hilos demonio y el problema de las condiciones de carrera
  * (varios hilos que modifican el mismo dato) con su solución mediante {@code synchronized}.
  */
 public final class ThreadsDemo {
+    private static final Logger LOGGER = AppLogger.get(ThreadsDemo.class);
+
 
     private ThreadsDemo() {
     }
@@ -101,18 +105,18 @@ public final class ThreadsDemo {
 
     /** Muestra por consola las diferencias entre las versiones segura e insegura. */
     public static void run() throws InterruptedException {
-        Thread thread = new Thread(() -> System.out.println("Hola desde el hilo " + Thread.currentThread().getName()), "mi-hilo");
+        Thread thread = new Thread(() -> LOGGER.info("Hola desde el hilo " + Thread.currentThread().getName()), "mi-hilo");
         thread.start();
         thread.join();
 
         Thread daemon = Thread.ofPlatform().daemon(true).name("demonio").unstarted(() -> { });
-        System.out.println("¿'demonio' es hilo demonio? " + daemon.isDaemon() + " (no impide que la JVM termine)");
+        LOGGER.info("¿'demonio' es hilo demonio? " + daemon.isDaemon() + " (no impide que la JVM termine)");
 
         int expected = 4 * 100_000;
-        System.out.println("Esperado: " + expected);
-        System.out.println("Sin sincronizar: " + unsafeCounter(4, 100_000) + "  <- condición de carrera, casi siempre menor");
-        System.out.println("synchronized:    " + synchronizedCounter(4, 100_000));
-        System.out.println("interrupt() detiene al hilo: " + interruptStopsWorker());
-        System.out.println("volatile hace visible la bandera: " + volatileFlagStopsLoop());
+        LOGGER.info("Esperado: " + expected);
+        LOGGER.info("Sin sincronizar: " + unsafeCounter(4, 100_000) + "  <- condición de carrera, casi siempre menor");
+        LOGGER.info("synchronized:    " + synchronizedCounter(4, 100_000));
+        LOGGER.info("interrupt() detiene al hilo: " + interruptStopsWorker());
+        LOGGER.info("volatile hace visible la bandera: " + volatileFlagStopsLoop());
     }
 }

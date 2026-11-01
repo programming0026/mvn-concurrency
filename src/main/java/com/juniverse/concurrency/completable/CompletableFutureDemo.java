@@ -10,12 +10,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * {@link CompletableFuture}: composición de tareas asíncronas sin bloquear. Encadenar ({@code thenApply}, {@code thenCompose}),
  * combinar ({@code thenCombine}, {@code allOf}, {@code anyOf}), manejar errores ({@code exceptionally}, {@code handle}) y
  * límites de tiempo ({@code orTimeout}, {@code completeOnTimeout}).
  */
 public final class CompletableFutureDemo {
+    private static final Logger LOGGER = AppLogger.get(CompletableFutureDemo.class);
+
 
     /**
      * Usuario simulado.
@@ -167,14 +171,14 @@ public final class CompletableFutureDemo {
 
     /** Ejecuta cada técnica y muestra el resultado. */
     public static void run() {
-        System.out.println("supplyAsync + thenApply + thenCombine: " + pipeline());
-        System.out.println("thenCompose (usuario -> pedidos): " + composeUserOrders(7));
-        System.out.println("allOf (cuadrados en paralelo): " + allOfSquares(List.of(1, 2, 3, 4)));
-        System.out.println("anyOf (la primera que termina): " + anyOfFastest());
-        System.out.println("exceptionally sin error: " + recover(false) + " | con error: " + recover(true));
-        System.out.println("handle sin error: " + handleBoth(false) + " | con error: " + handleBoth(true));
-        System.out.println("completeOnTimeout: " + completeOnTimeout());
-        System.out.println("orTimeout lanza TimeoutException: " + orTimeoutFails());
-        System.out.println("Pool propio: " + threadNameInCustomPool());
+        LOGGER.info("supplyAsync + thenApply + thenCombine: " + pipeline());
+        LOGGER.info("thenCompose (usuario -> pedidos): " + composeUserOrders(7));
+        LOGGER.info("allOf (cuadrados en paralelo): " + allOfSquares(List.of(1, 2, 3, 4)));
+        LOGGER.info("anyOf (la primera que termina): " + anyOfFastest());
+        LOGGER.info("exceptionally sin error: " + recover(false) + " | con error: " + recover(true));
+        LOGGER.info("handle sin error: " + handleBoth(false) + " | con error: " + handleBoth(true));
+        LOGGER.info("completeOnTimeout: " + completeOnTimeout());
+        LOGGER.info("orTimeout lanza TimeoutException: " + orTimeoutFails());
+        LOGGER.info("Pool propio: " + threadNameInCustomPool());
     }
 }

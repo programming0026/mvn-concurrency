@@ -8,12 +8,16 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
 import java.util.concurrent.atomic.LongAdder;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Variables atómicas: operaciones de lectura-modificación-escritura sin bloqueos, basadas en la instrucción de hardware
  * <i>compare-and-set</i> (CAS). Son la base de muchas estructuras concurrentes y más baratas que {@code synchronized}
  * cuando la operación es sencilla.
  */
 public final class AtomicDemo {
+    private static final Logger LOGGER = AppLogger.get(AtomicDemo.class);
+
 
     /**
      * Configuración inmutable: para cambiarla se crea otra y se intercambia con CAS.
@@ -132,12 +136,12 @@ public final class AtomicDemo {
     public static void run() throws InterruptedException {
         int threads = 8;
         int increments = 200_000;
-        System.out.println("Esperado: " + (long) threads * increments);
-        System.out.println("AtomicInteger: " + atomicCounter(threads, increments));
-        System.out.println("LongAdder:     " + adderCounter(threads, increments));
-        System.out.println("Máximo con accumulateAndGet: " + maxOf(new int[] {4, 91, 17, 55, 3, 88}));
-        System.out.println("Acción ejecutada una sola vez con compareAndSet: " + runOnlyOnce(16) + " vez");
-        System.out.println("AtomicReference<Config> tras 4 x 1000 actualizaciones: " + concurrentConfigUpdates(4, 1_000));
-        System.out.println("ABA detectado con AtomicStampedReference: " + abaDetectedWithStamp());
+        LOGGER.info("Esperado: " + (long) threads * increments);
+        LOGGER.info("AtomicInteger: " + atomicCounter(threads, increments));
+        LOGGER.info("LongAdder:     " + adderCounter(threads, increments));
+        LOGGER.info("Máximo con accumulateAndGet: " + maxOf(new int[] {4, 91, 17, 55, 3, 88}));
+        LOGGER.info("Acción ejecutada una sola vez con compareAndSet: " + runOnlyOnce(16) + " vez");
+        LOGGER.info("AtomicReference<Config> tras 4 x 1000 actualizaciones: " + concurrentConfigUpdates(4, 1_000));
+        LOGGER.info("ABA detectado con AtomicStampedReference: " + abaDetectedWithStamp());
     }
 }

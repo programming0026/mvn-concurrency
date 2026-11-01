@@ -17,12 +17,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Executors: en lugar de crear hilos a mano se envían tareas a un pool. Se ven {@code Runnable} vs {@code Callable},
  * {@code Future}, {@code invokeAll/invokeAny}, tiempos de espera, cancelación, tareas programadas y políticas de rechazo.
  * Desde Java 19 {@link ExecutorService} es {@code AutoCloseable}: el {@code try-with-resources} espera a que terminen las tareas.
  */
 public final class ExecutorsDemo {
+    private static final Logger LOGGER = AppLogger.get(ExecutorsDemo.class);
+
 
     private ExecutorsDemo() {
     }
@@ -207,13 +211,13 @@ public final class ExecutorsDemo {
 
     /** Ejecuta cada técnica y muestra el resultado. */
     public static void run() throws Exception {
-        System.out.println("Cuadrados con Callable/Future: " + squares(List.of(1, 2, 3, 4, 5)));
-        System.out.println("invokeAll (orden de entrada): " + invokeAll());
-        System.out.println("invokeAny (la primera en terminar): " + invokeAny());
-        System.out.println("get con timeout + cancel: " + timeoutAndCancel());
-        System.out.println("Excepción de la tarea llega en ExecutionException: " + failedTaskMessage());
-        System.out.println("scheduleAtFixedRate se repite: " + scheduledRunsRepeatedly(3));
-        System.out.println("AbortPolicy rechaza la tarea que no cabe: " + abortPolicyRejects());
-        System.out.println("CallerRunsPolicy ejecuta en el hilo que envía: " + callerRunsPolicyRunsInCaller());
+        LOGGER.info("Cuadrados con Callable/Future: " + squares(List.of(1, 2, 3, 4, 5)));
+        LOGGER.info("invokeAll (orden de entrada): " + invokeAll());
+        LOGGER.info("invokeAny (la primera en terminar): " + invokeAny());
+        LOGGER.info("get con timeout + cancel: " + timeoutAndCancel());
+        LOGGER.info("Excepción de la tarea llega en ExecutionException: " + failedTaskMessage());
+        LOGGER.info("scheduleAtFixedRate se repite: " + scheduledRunsRepeatedly(3));
+        LOGGER.info("AbortPolicy rechaza la tarea que no cabe: " + abortPolicyRejects());
+        LOGGER.info("CallerRunsPolicy ejecuta en el hilo que envía: " + callerRunsPolicyRunsInCaller());
     }
 }

@@ -6,11 +6,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Locks explícitos de {@code java.util.concurrent.locks}: más flexibles que {@code synchronized} (intento sin esperar,
  * espera con tiempo límite, varias condiciones, bloqueos de lectura/escritura y lectura optimista).
  */
 public final class LocksDemo {
+    private static final Logger LOGGER = AppLogger.get(LocksDemo.class);
+
 
     private LocksDemo() {
     }
@@ -133,12 +137,12 @@ public final class LocksDemo {
 
     /** Muestra cada tipo de lock. */
     public static void run() throws InterruptedException {
-        System.out.println("ReentrantLock, contador exacto: " + lockedCounter(4, 100_000));
-        System.out.println("tryLock con timeout falla si el lock está ocupado: " + tryLockFailsWhileHeld());
-        System.out.println("Condition despierta al que espera: " + conditionSignalsWaiter());
-        System.out.println("ReadWriteCache tras 4 x 500 escrituras: " + readWriteCacheSize(4, 500) + " entradas");
+        LOGGER.info("ReentrantLock, contador exacto: " + lockedCounter(4, 100_000));
+        LOGGER.info("tryLock con timeout falla si el lock está ocupado: " + tryLockFailsWhileHeld());
+        LOGGER.info("Condition despierta al que espera: " + conditionSignalsWaiter());
+        LOGGER.info("ReadWriteCache tras 4 x 500 escrituras: " + readWriteCacheSize(4, 500) + " entradas");
         StampedPoint point = new StampedPoint();
         point.move(3, 4);
-        System.out.println("StampedLock (lectura optimista), distancia de (3,4): " + point.distanceFromOrigin());
+        LOGGER.info("StampedLock (lectura optimista), distancia de (3,4): " + point.distanceFromOrigin());
     }
 }

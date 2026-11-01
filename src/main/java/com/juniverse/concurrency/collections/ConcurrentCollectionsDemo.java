@@ -10,11 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import com.juniverse.concurrency.util.Concurrent;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Colecciones concurrentes: {@code ConcurrentHashMap} (operaciones atómicas como {@code merge}),
  * {@code CopyOnWriteArrayList} (iterar mientras se modifica) y {@code BlockingQueue} (productor-consumidor).
  */
 public final class ConcurrentCollectionsDemo {
+    private static final Logger LOGGER = AppLogger.get(ConcurrentCollectionsDemo.class);
+
 
     private static final int POISON_PILL = -1;
 
@@ -102,9 +106,9 @@ public final class ConcurrentCollectionsDemo {
 
     /** Muestra cada colección. */
     public static void run() throws InterruptedException {
-        System.out.println("ConcurrentHashMap.merge desde 4 hilos: " + new java.util.TreeMap<>(wordCount(List.of("java", "hilos", "java", "lock", "java"), 4)));
-        System.out.println("BlockingQueue, suma consumida de 1..1000: " + producerConsumer(1_000));
-        System.out.println("ArrayList lanza ConcurrentModificationException: " + arrayListThrowsWhenModified());
-        System.out.println("CopyOnWriteArrayList permite modificar al recorrer: " + copyOnWriteAllowsModification());
+        LOGGER.info("ConcurrentHashMap.merge desde 4 hilos: " + new java.util.TreeMap<>(wordCount(List.of("java", "hilos", "java", "lock", "java"), 4)));
+        LOGGER.info("BlockingQueue, suma consumida de 1..1000: " + producerConsumer(1_000));
+        LOGGER.info("ArrayList lanza ConcurrentModificationException: " + arrayListThrowsWhenModified());
+        LOGGER.info("CopyOnWriteArrayList permite modificar al recorrer: " + copyOnWriteAllowsModification());
     }
 }

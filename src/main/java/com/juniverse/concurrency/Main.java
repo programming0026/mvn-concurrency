@@ -9,18 +9,21 @@ import com.juniverse.concurrency.locks.LocksDemo;
 import com.juniverse.concurrency.synchronizers.SynchronizersDemo;
 import com.juniverse.concurrency.threads.ThreadsDemo;
 
+import java.util.logging.Logger;
 /**
  * Recorrido por la concurrencia en Java: hilos, executors, CompletableFuture, Fork/Join, variables atómicas, locks,
  * sincronizadores y colecciones concurrentes. (Los hilos virtuales de Java 21 tienen su propio ejemplo: mvn-virtual-threads.)
  */
 public final class Main {
+    private static final Logger LOGGER = AppLogger.get(Main.class);
+
 
     private Main() {
     }
 
     private static void title(String text) {
-        System.out.println();
-        System.out.println("=========== " + text + " ===========");
+        LOGGER.info("");
+        LOGGER.info("=========== " + text + " ===========");
     }
 
     /**

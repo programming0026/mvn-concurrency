@@ -7,12 +7,16 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Fork/Join: "divide y vencerás" con robo de trabajo. Una tarea grande se parte en subtareas ({@code fork}) hasta que
  * son lo bastante pequeñas, se resuelven y se unen los resultados ({@code join}). {@link RecursiveTask} devuelve un
  * valor y {@link RecursiveAction} no.
  */
 public final class ForkJoinDemo {
+    private static final Logger LOGGER = AppLogger.get(ForkJoinDemo.class);
+
 
     private ForkJoinDemo() {
     }
@@ -180,7 +184,7 @@ public final class ForkJoinDemo {
             data[i] = i % 1000;
         }
         ForkJoinPool pool = ForkJoinPool.commonPool();
-        System.out.println("Núcleos disponibles: " + Runtime.getRuntime().availableProcessors() + ", paralelismo del commonPool: " + pool.getParallelism());
+        LOGGER.info("Núcleos disponibles: " + Runtime.getRuntime().availableProcessors() + ", paralelismo del commonPool: " + pool.getParallelism());
 
         long[] result = new long[1];
         long sequential = Concurrent.timeMillis(() -> {
@@ -192,8 +196,8 @@ public final class ForkJoinDemo {
         });
         long parallelResult = parallelSum(data, pool);
         long parallel = Concurrent.timeMillis(() -> parallelSum(data, pool));
-        System.out.println("Suma secuencial: " + result[0] + " en " + sequential + " ms");
-        System.out.println("Suma Fork/Join:  " + parallelResult + " en " + parallel + " ms (la mejora depende del número de núcleos)");
+        LOGGER.info("Suma secuencial: " + result[0] + " en " + sequential + " ms");
+        LOGGER.info("Suma Fork/Join:  " + parallelResult + " en " + parallel + " ms (la mejora depende del número de núcleos)");
 
         int[] numbers = new Random(1).ints(2_000_000, 0, 1_000_000).toArray();
         long sortTime = Concurrent.timeMillis(() -> parallelSort(numbers, pool));
@@ -201,7 +205,7 @@ public final class ForkJoinDemo {
         for (int i = 1; i < numbers.length; i++) {
             sorted &= numbers[i - 1] <= numbers[i];
         }
-        System.out.println("MergeSort paralelo de 2.000.000 números: " + sortTime + " ms, ordenado = " + sorted);
-        System.out.println("Los streams paralelos (parallel()) usan este mismo commonPool por debajo.");
+        LOGGER.info("MergeSort paralelo de 2.000.000 números: " + sortTime + " ms, ordenado = " + sorted);
+        LOGGER.info("Los streams paralelos (parallel()) usan este mismo commonPool por debajo.");
     }
 }

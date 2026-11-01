@@ -10,11 +10,15 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import java.util.logging.Logger;
+import com.juniverse.concurrency.AppLogger;
 /**
  * Sincronizadores: objetos que coordinan hilos. {@code CountDownLatch} (esperar a que ocurran N eventos),
  * {@code CyclicBarrier} (encontrarse todos en un punto, repetidamente) y {@code Semaphore} (limitar el acceso concurrente).
  */
 public final class SynchronizersDemo {
+    private static final Logger LOGGER = AppLogger.get(SynchronizersDemo.class);
+
 
     private SynchronizersDemo() {
     }
@@ -104,8 +108,8 @@ public final class SynchronizersDemo {
 
     /** Muestra cada sincronizador. */
     public static void run() throws InterruptedException {
-        System.out.println("CountDownLatch (pistola de salida), corredores que terminaron: " + startGun(5));
-        System.out.println("CyclicBarrier, orden de eventos: " + barrierPhases(3));
-        System.out.println("Semaphore(3) con 10 hilos, máximo simultáneo observado: " + maxConcurrentWithSemaphore(3, 10));
+        LOGGER.info("CountDownLatch (pistola de salida), corredores que terminaron: " + startGun(5));
+        LOGGER.info("CyclicBarrier, orden de eventos: " + barrierPhases(3));
+        LOGGER.info("Semaphore(3) con 10 hilos, máximo simultáneo observado: " + maxConcurrentWithSemaphore(3, 10));
     }
 }
